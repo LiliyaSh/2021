@@ -1,0 +1,28 @@
+#include <iostream>
+
+using namespace std;
+
+void first(int num) {
+    num = 1;
+}
+
+void second(int* num) {
+    *num = 100;
+}
+
+int main()
+{
+    int num = 10;
+
+    cout << "The number: " << num << endl;
+
+    first(num);
+
+    cout << "Number after first function: " << num << endl;
+
+    second(&num);
+
+    cout << "Number after second function: " << num << endl;
+
+    return 0;
+}
