@@ -1,0 +1,139 @@
+#include <iostream>
+
+using namespace std;
+
+template<typename T>
+class List
+{
+public:
+
+	template<typename T>
+	class ListElem
+	{
+	public:
+		ListElem *pNext;
+		T data;
+
+		ListElem(T data = T(), ListElem *pNext = nullptr)
+		{
+			this->data = data;
+			this->pNext = pNext;
+		}
+	};
+
+	int size;
+	ListElem<T>* head;
+
+	List()
+	{
+		size = 0;
+		head = nullptr;
+	}
+
+	void odd(T data)
+	{
+		if (head == nullptr)
+			head = new ListElem<T>(data);
+		else
+		{
+			ListElem<T>* current = this->head;
+
+			while (current->pNext != nullptr)
+				current = current->pNext;
+
+			current->pNext = new ListElem<T>(data);
+		}
+
+		size++;
+	}
+
+	void insert(T data, int index)
+	{
+
+		if (index == 0)
+		{
+			head = new ListElem<T>(data, head);
+			size++;
+		}
+		else
+		{
+			ListElem<T>* previous = this->head;
+
+			for (int i = 0; i < index - 1; i++)
+				previous = previous->pNext;
+
+			ListElem<T>* newNode = new ListElem<T>(data, previous->pNext);
+
+			previous->pNext = newNode;
+
+			size++;
+		}
+	}
+
+	void del(int index)
+	{
+		ListElem<T>* previous = this->head;
+		for (int i = 0; i < index - 1; i++)
+			previous = previous->pNext;
+
+		ListElem<T>* toDelete = previous->pNext;
+
+		previous->pNext = toDelete->pNext;
+
+		delete toDelete;
+
+		size--;
+	}
+
+	T get(int index)
+	{
+		int counter = 0;
+
+		ListElem<T>* current = this->head;
+
+		while (current != nullptr)
+		{
+			if (counter == index)
+				return current->data;
+
+			current = current->pNext;
+			counter++;
+		}
+	}
+};
+
+int main()
+{
+	setlocale(LC_ALL, "ru");
+
+	List<int> list;
+
+	cout << "Добавим 10 элементов в наш список с помощью метода odd()\n";
+
+	for (int i = 0; i < 10; i++)
+		list.odd(i);
+
+	cout << "Выведем все элементы списка с помощью метода get()\n";
+
+	for (int i = 0; i < list.size; i++)
+		cout << list.get(i) << " ";
+	cout << endl << endl;
+
+	cout << "вставим новый элемент(число 100) в наш список на пятую позицию с помощью метода insert()\n";
+
+	list.insert(100, 4);
+
+	for (int i = 0; i < list.size; i++)
+		cout << list.get(i) << " ";
+	cout << endl << endl;
+
+	cout << "Удалим седьмой элемент списка с помощью метода del()\n";
+
+	list.del(6);
+
+	for (int i = 0; i < list.size; i++)
+		cout << list.get(i) << " ";
+	cout << endl;
+
+	return 0;
+}
