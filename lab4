@@ -1,0 +1,130 @@
+#include <iostream>
+
+using namespace std;
+
+template<typename T>
+class List
+{
+public:
+
+	template<typename T>
+	class ListElem
+	{
+	public:
+		ListElem* pNext;
+		T data;
+
+		ListElem(T data = T(), ListElem* pNext = nullptr)
+		{
+			this->data = data;
+			this->pNext = pNext;
+		}
+	};
+
+	int size;
+	ListElem<T>* head;
+
+	List()
+	{
+		size = 0;
+		head = nullptr;
+	}
+
+	void push(T data)
+	{
+		if (head == nullptr)
+			head = new ListElem<T>(data);
+		else
+		{
+			ListElem<T>* current = this->head;
+
+			while (current->pNext != nullptr)
+				current = current->pNext;
+
+			current->pNext = new ListElem<T>(data);
+		}
+
+		size++;
+	}
+
+
+	void pop()
+	{
+		if (head != nullptr) {
+			ListElem<T>* toDelete = this->head;
+
+			head = head->pNext;
+
+			delete toDelete;
+
+			size--;
+		}
+	}
+
+	T front()
+	{
+		int counter = 0;
+
+		ListElem<T>* current = this->head;
+
+		while (current != nullptr)
+		{
+			if (counter == 0)
+				return current->data;
+
+			current = current->pNext;
+			counter++;
+		}
+	}
+
+	T back()
+	{
+		int counter = 0;
+
+		ListElem<T>* current = this->head;
+
+		while (current != nullptr)
+		{
+			if (counter == this->size - 1)
+				return current->data;
+
+			current = current->pNext;
+			counter++;
+		}
+	}
+};
+
+int main()
+{
+	setlocale(LC_ALL, "ru");
+
+	List<string> queue;
+
+	/*
+	cout << "Добавим 10 элементов в наш список с помощью метода odd()\n";
+
+	for (int i = 0; i < 10; i++)
+		list.push(i);
+	*/
+
+	queue.push("a");
+	queue.push("b");
+	queue.push("c");
+	queue.push("d");
+	queue.push("e");
+
+
+	cout << "Первый элемент очереди " << queue.front() << endl;
+
+	cout << "Последний элемент очереди " << queue.back() << endl;
+
+	cout << "Удаляем первый элемент\n";
+
+	queue.pop();
+
+	cout << "Первый элемент очереди " << queue.front() << endl;
+
+	cout << "Последний элемент очереди " << queue.back() << endl;
+
+	return 0;
+}
