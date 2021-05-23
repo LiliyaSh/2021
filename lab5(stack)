@@ -1,0 +1,105 @@
+#include <iostream>
+
+using namespace std;
+
+template<typename T>
+class List
+{
+public:
+
+	template<typename T>
+	class ListElem
+	{
+	public:
+		ListElem* pNext;
+		T data;
+
+		ListElem(T data = T(), ListElem* pNext = nullptr)
+		{
+			this->data = data;
+			this->pNext = pNext;
+		}
+	};
+
+	int size;
+	ListElem<T>* head;
+
+	List()
+	{
+		size = 0;
+		head = nullptr;
+	}
+
+	void push(T data)
+	{
+		if (head == nullptr)
+			head = new ListElem<T>(data);
+		else
+		{
+			ListElem<T>* current = this->head;
+
+			while (current->pNext != nullptr)
+				current = current->pNext;
+
+			current->pNext = new ListElem<T>(data);
+		}
+
+		size++;
+	}
+
+
+	void pop()
+	{
+		if (head != nullptr) {
+			ListElem<T>* toDelete = this->head;
+
+			while (toDelete->pNext != nullptr)
+				toDelete = toDelete->pNext;
+
+			delete toDelete;
+
+			size--;
+		}
+	}
+
+	T peek()
+	{
+		int counter = 0;
+
+		ListElem<T>* current = this->head;
+
+		while (current != nullptr)
+		{
+			if (counter == this->size - 1)
+				return current->data;
+
+			current = current->pNext;
+			counter++;
+		}
+	}
+};
+
+int main()
+{
+	setlocale(LC_ALL, "ru");
+
+	List<string> stack;
+
+	stack.push("hello");
+	stack.push("this");
+	stack.push("is");
+	stack.push("a");
+	stack.push("test");
+	stack.push("message");
+
+
+	cout << "Первый элемент очереди " << stack.peek() << endl << endl;
+
+	cout << "Удаляем первый элемент\n\n";
+
+	stack.pop();
+
+	cout << "Первый элемент очереди " << stack.peek() << endl << endl;
+
+	return 0;
+}
