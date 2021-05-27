@@ -48,13 +48,15 @@ public:
 	}
 
 
-	void pop()
+	T pop()
 	{
 		if (head != nullptr) {
 			ListElem<T>* toDelete = this->head;
 
 			while (toDelete->pNext != nullptr)
 				toDelete = toDelete->pNext;
+
+			return toDelete;
 
 			delete toDelete;
 
@@ -103,3 +105,4 @@ int main()
 
 	return 0;
 }
+
